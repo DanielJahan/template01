@@ -183,7 +183,7 @@
 </section>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxBN9N3XxDzQcyqTIZMvPh9sh71n3xUEhmhOZId7-u6-U-C4tqA-6QZIWbs8mzz-6Sa/exec"; // paste URL here
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxBN9N3XxDzQcyqTIZMvPh9sh71n3xUEhmhOZId7-u6-U-C4tqA-6QZIWbs8mzz-6Sa/exec";
 
   document.getElementById("emailForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -192,18 +192,22 @@
 
     fetch(scriptURL, {
       method: "POST",
-		mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email }),
     })
-    .then(response => {
+    .then(response => response.text())
+    .then(text => {
+      console.log("Response from server:", text); // debug
       document.getElementById("responseMessage").innerText = "✅ Thank you! You're signed up.";
       document.getElementById("email").value = "";
     })
     .catch(error => {
+      console.error("Error:", error); // debug
       document.getElementById("responseMessage").innerText = "❌ Something went wrong. Try again.";
     });
   });
 </script>
+
 
 			<!-- Footer -->
 				<footer id="footer">
@@ -233,5 +237,6 @@
 	</body>
 
 </html>
+
 
 
