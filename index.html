@@ -196,7 +196,7 @@
 
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxBN9N3XxDzQcyqTIZMvPh9sh71n3xUEhmhOZId7-u6-U-C4tqA-6QZIWbs8mzz-6Sa/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxBN9N3XxDzQcyqTIZMvPh9sh71n3xUEhmhOZId7-u6-U-C4tqA-6QZIWbs8mzz-6Sa/exec"; // your Apps Script Web App URL
 
   document.getElementById("emailForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -212,18 +212,16 @@
       method: "POST",
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
-    .then(text => {
-      console.log("Response from server:", text); // debug
-      document.getElementById("responseMessage").innerText = "✅ Thank you! You're signed up.";
-      document.getElementById("email").value = "";
+    .then(response => {
+      alert("✅ Thank you! Your info has been submitted.");
+      document.getElementById("emailForm").reset();
     })
     .catch(error => {
-      console.error("Error:", error); // debug
-      document.getElementById("responseMessage").innerText = "❌ Something went wrong. Try again.";
+      alert("❌ Something went wrong. Try again.");
     });
   });
 </script>
+
 
 
 			<!-- Footer -->
@@ -254,6 +252,7 @@
 	</body>
 
 </html>
+
 
 
 
