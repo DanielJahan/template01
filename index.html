@@ -11,6 +11,56 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		  <style>
+    /* Modal Styles */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4); 
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 	</head>
 	<body class="is-preload landing">
 		<div id="page-wrapper">
@@ -255,9 +305,8 @@
       alert("❌ Something went wrong. Try again.");
     });
   });
-</script>
-<script>
-  // Get modal and button
+
+	  // Get modal and button
   var modal = document.getElementById("donationModal");
   var homeButton = document.getElementById("homeButton");
   var span = document.getElementsByClassName("close")[0];
@@ -294,6 +343,7 @@
 
 
 
+
 			<!-- Footer -->
 				<footer id="footer">
 					<ul class="icons">
@@ -322,6 +372,7 @@
 	</body>
 
 </html>
+
 
 
 
