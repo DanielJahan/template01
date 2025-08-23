@@ -21,8 +21,12 @@
   <nav id="nav">
     <ul>
       <li><a href="#banner">Home</a></li>
+		<!--
       <li><a href="#one">About</a></li>
-      <li><a href="#two">Vision</a></li>
+      -->
+		<li></li><a href="javascript:void(0);" class="button primary" id="homeButton">Home</a></li>
+
+		<li><a href="#two">Vision</a></li>
       <li><a href="#three">Tokenomics</a></li>
       <li><a href="#four">Ownership NFTs</a></li>
       <li><a href="#five">Presale</a></li>
@@ -31,6 +35,71 @@
   </nav>
 </header>
 
+			<!-- Donation Modal -->
+<div id="donationModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Support Our Vision</h2>
+    <p>Thank you for considering supporting us! If you enjoy our project and don't want to buy tokens, you can donate to help make our dream and vision come true.</p>
+    <form id="donationForm">
+      <label for="wallet">Enter your wallet address:</label>
+      <input type="text" id="wallet" name="wallet" placeholder="Your Wallet Address" required>
+
+      <label for="amount">Amount (in USDT/TRX):</label>
+      <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+
+      <h3>Choose a donation method:</h3>
+      <label>
+        <input type="radio" name="method" value="USDT" required> USDT
+      </label>
+      <label>
+        <input type="radio" name="method" value="TRX" required> TRX
+      </label>
+
+      <button type="submit">Donate</button>
+    </form>
+    <p>Thank you for your support!</p>
+  </div>
+</div>
+
+<script>
+  // Get modal and button
+  var modal = document.getElementById("donationModal");
+  var homeButton = document.getElementById("homeButton");
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the "Home" button, open the modal
+  homeButton.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Handle form submission (simple demo, no actual submission)
+  document.getElementById("donationForm").onsubmit = function(event) {
+    event.preventDefault(); // Prevent form from refreshing the page
+
+    var wallet = document.getElementById("wallet").value;
+    var amount = document.getElementById("amount").value;
+    var method = document.querySelector('input[name="method"]:checked').value;
+
+    alert("Thank you for your donation of " + amount + " " + method + " to the wallet address " + wallet);
+    modal.style.display = "none";  // Close modal after submission
+  }
+</script>
+
+
+			
 
 
 			<!-- Banner -->
@@ -252,6 +321,7 @@
 	</body>
 
 </html>
+
 
 
 
