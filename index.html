@@ -259,6 +259,9 @@
 
     fetch(scriptURL, {
       method: "POST",
+		  headers: {
+    "Content-Type": "application/json"   // tell GAS it's JSON
+  },
       body: JSON.stringify(data),
     })
     .then(response => {
@@ -301,6 +304,7 @@
 	</body>
 
 </html>
+
 
 
 
