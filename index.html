@@ -208,6 +208,125 @@
 							</footer>
 						</div>
 					</section>
+					
+					
+					
+					
+					<section id="invest-form" class="wrapper style2 special fade">
+  <div class="container">
+    <header>
+      <h2>Why Million Star Resort?</h2>
+      <p>A resort designed to create stories, not just stays</p>
+    </header>
+
+    <form id="investForm" class="cta">
+      <div class="row gtr-uniform gtr-50">
+        
+        <!-- Select Wallet -->
+        <div class="col-12">
+          <label for="walletSelect"><strong>Select Wallet</strong></label>
+          <select id="walletSelect" class="fit">
+            <option value="">Choose a wallet…</option>
+            <option value="metamask">MetaMask</option>
+            <option value="trust">TrustWallet</option>
+          </select>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-12">
+          <label for="amountMatic" style="margin-top:0.75rem;"><strong>Amount (MATIC)</strong></label>
+          <input id="amountMatic" type="number" class="fit" min="0" step="0.0001" placeholder="e.g. 1.0">
+        </div>
+
+        <!-- Actions -->
+        <div class="col-12">
+          <ul class="actions" style="margin-top:1rem;">
+            <li><a id="btnConnect" class="button">Connect Wallet</a></li>
+            <li><a id="btnInvest" class="button primary">Invest</a></li>
+          </ul>
+        </div>
+
+        <!-- Status -->
+        <div class="col-12">
+          <pre id="investStatus" style="white-space:pre-wrap; background:#0b1633; color:#fff; padding:6px 8px; border-radius:6px;">
+Status: Not connected
+          </pre>
+        </div>
+
+        <!-- Contract Address -->
+        <div class="col-12">
+          <label for="contractAddress" style="margin-top:0.75rem;"><strong>Contract Address</strong></label>
+          <input id="contractAddress" type="text" class="fit" value="0xYourContractAddressHere" readonly>
+        </div>
+
+        <!-- Referral -->
+        <div class="col-12">
+          <label for="referralAddr" style="margin-top:0.75rem;"><strong>Referral Address (optional)</strong></label>
+          <input id="referralAddr" type="text" class="fit" placeholder="0x... or leave blank">
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<section id="invest-form" class="wrapper style2 special fade">
+  <div class="container">
+    <header>
+      <h2>Why Million Star Resort?</h2>
+      <p>A resort designed to create stories, not just stays</p>
+    </header>
+
+    <form id="investForm" class="cta">
+      <div class="row gtr-uniform gtr-50">
+        
+        <!-- Select Wallet -->
+        <div class="col-12">
+          <label for="walletSelect"><strong>Select Wallet</strong></label>
+          <select id="walletSelect" class="fit">
+            <option value="">Choose a wallet…</option>
+            <option value="metamask">MetaMask</option>
+            <option value="trust">TrustWallet</option>
+          </select>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-12">
+          <label for="amountMatic" style="margin-top:0.75rem;"><strong>Amount (MATIC)</strong></label>
+          <input id="amountMatic" type="number" class="fit" min="0" step="0.0001" placeholder="e.g. 1.0">
+        </div>
+
+        <!-- Actions -->
+        <div class="col-12">
+          <ul class="actions" style="margin-top:1rem;">
+            <li><a id="btnConnect" class="button">Connect Wallet</a></li>
+            <li><a id="btnInvest" class="button primary">Invest</a></li>
+          </ul>
+        </div>
+
+        <!-- Status -->
+        <div class="col-12">
+          <pre id="investStatus" style="white-space:pre-wrap; background:#0b1633; color:#fff; padding:6px 8px; border-radius:6px;">
+Status: Not connected
+          </pre>
+        </div>
+
+        <!-- Contract Address -->
+        <div class="col-12">
+          <label for="contractAddress" style="margin-top:0.75rem;"><strong>Contract Address</strong></label>
+          <input id="contractAddress" type="text" class="fit" value="0xYourContractAddressHere" readonly>
+        </div>
+
+        <!-- Referral -->
+        <div class="col-12">
+          <label for="referralAddr" style="margin-top:0.75rem;"><strong>Referral Address (optional)</strong></label>
+          <input id="referralAddr" type="text" class="fit" placeholder="0x... or leave blank">
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
 
 							<!-- six -->
 	<!-- six -->
@@ -222,12 +341,47 @@
 			<div class="row gtr-uniform">
 				<div class="col-4 col-12-xsmall">
 					<div class="box">
-						<h3>Bitcoin (BTC)</h3>
-						<p>Send your donation to our Bitcoin wallet address:</p>
-						<input type="text" value="bc1qmvgz60xdhvlad60heswwl3mmq2ecrpjunugpqc" id="btc-address" class="fit" readonly>
-						<button class="button primary small" onclick="copyToClipboard('btc-address')">Copy</button>
-						<div class="qr-code">
-							<img src="images/BTC_qr_bc1qmvgz60xdhvlad60heswwl3mmq2ecrpjunugpqc.png" alt="BTC QR Code" width="150" height="150">
+							<div class="content">
+							<header>
+								<h2>Why Million Star Resort?</h2>
+								<p>A resort designed to create stories, not just stays</p>
+							</header>
+							<!-- Wallet / Investment Form -->
+		
+		  <!-- Select wallet -->
+		  <label for="walletSelect"><strong>Select Wallet</strong></label>
+		  <select id="walletSelect" class="fit">
+			<option value="">Choose a wallet…</option>
+			<option value="metamask">MetaMask</option>
+			<option value="trust">TrustWallet</option>
+		  </select>
+		  
+		   <!-- Amount -->
+		  <label for="amountMatic" style="margin-top:0.75rem;"><strong>Amount (MATIC)</strong></label>
+		  <input id="amountMatic" type="number" class="fit" min="0" step="0.0001" placeholder="e.g. 1.0">
+		  
+		   <!-- Actions -->
+		  <ul class="actions" style="margin-top:1rem;">
+			<li><a id="btnConnect" class="button">Connect Wallet</a></li>
+			<li><a id="btnInvest" class="button primary">Invest</a></li>
+		  </ul>
+		  </ul>
+		  <pre id="investStatus" style="white-space:pre-wrap; background:#0b1633; color:#fff; padding:6px 8px; border-radius:6px;">
+	Status: Not connected
+	</pre>
+
+
+		  <!-- Contract Address (readonly) -->
+		  <label for="contractAddress" style="margin-top:0.75rem;"><strong>Contract Address</strong></label>
+		  <input id="contractAddress" type="text" class="fit" value="0xYourContractAddressHere" readonly>
+
+		 
+		  <!-- Referral (optional) -->
+		  <label for="referralAddr" style="margin-top:0.75rem;"><strong>Referral Address (optional)</strong></label>
+		  <input id="referralAddr" type="text" class="fit" placeholder="0x... or leave blank">
+
+
+		 
 						</div>
 					</div>
 				</div>
