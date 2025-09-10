@@ -306,6 +306,122 @@ Status: Not connected
 	</section>
 
 
+<script>
+  // Grab key DOM elements by their IDs so we can interact with the page
+  const btnConnect = document.getElementById("btnConnect");     // Connect Wallet button
+  const btnInvest  = document.getElementById("btnInvest");      // Invest button
+  const statusEl   = document.getElementById("investStatus");   // <pre> where status messages go
+
+  // State we keep in JS while the page is open
+  let currentAccount = null;  // The connected wallet address (once user connects)
+  let chainId = null;         // The network (chain) ID (e.g., 0x1 for Ethereum mainnet)
+
+  // Helper to show messages in the <pre> area
+  function logStatus(msg) {
+    statusEl.textContent = "Status: " + msg; // Replace content with a readable status
+  }
+
+  // Convert a decimal string (e.g., "1.23") to a hex-encoded wei value for Ethereum RPC
+  function parseEtherToHexWei(amountStr) {
+    if (!amountStr) throw new Error("Invalid amount");        // Guard against empty/undefined
+    const [wholeRaw, fracRaw = ""] = amountStr.split(".");    // Split into whole and fractional parts
+    const whole = wholeRaw === "" ? "0" : wholeRaw;           // Treat "" as 0
+    const frac = (fracRaw + "0".repeat(18)).slice(0, 18);     // Right-pad fractional to 18 decimals
+    const wei = BigInt(whole) * (10n ** 18n) + BigInt(frac);  // Convert to bigint wei (1 ETH = 1e18 wei)
+    return "0x" + wei.toString(16);                           // Return as 0x… hex string (what RPC expects)
+  }
+
+  // ----- Connect wallet flow -----
+  btnConnect.addEventListener("click", async (e) => {
+    e.preventDefault();  // Your button is an <a>; prevent default link behavior (no page jump)
+
+    // Check that the browser has an injected Ethereum provider (MetaMask)
+    if (typeof window.ethereum === "undefined") {
+      logStatus("MetaMask not detected. Install from metamask.io");
+      return; // Stop here if not present
+    }
+
+    try {
+      // Ask MetaMask to prompt the user to connect accounts
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // Save the first account as the active one
+      currentAccount = accounts[0];
+
+      // Also read the current chain ID (e.g., "0x89" for Polygon mainnet)
+      chainId = await window.ethereum.request({ method: "eth_chainId" });
+
+      // Update UI
+      logStatus("Connected: " + currentAccount);
+    } catch (err) {
+      // If the user rejects or an error occurs, show it
+      logStatus("Error: " + (err.message || err));
+    }
+  });
+
+  // ----- Send transaction flow -----
+  btnInvest.addEventListener("click", async (e) => {
+    e.preventDefault();  // Prevent default <a> navigation
+
+    // Must have an account connected first
+    if (!currentAccount) {
+      logStatus("Please connect wallet first.");
+      return;
+    }
+
+    // Read inputs from your HTML by ID
+    const amountStr = document.getElementById("amountMatic").value.trim();   // Amount in MATIC/ETH
+    const to        = document.getElementById("contractAddress").value.trim(); // Recipient/contract address
+
+    // Validate amount
+    if (!amountStr || isNaN(amountStr)) {
+      logStatus("Enter a valid amount.");
+      return;
+    }
+
+    // Validate address format (basic 0x + 40 hex chars)
+    if (!/^0x[a-fA-F0-9]{40}$/.test(to)) {
+      logStatus("Invalid contract address.");
+      return;
+    }
+
+    // Convert amount to hex wei
+    let valueHex;
+    try {
+      valueHex = parseEtherToHexWei(amountStr);
+    } catch (err) {
+      logStatus("Amount error: " + err.message);
+      return;
+    }
+
+    // Inform the user we’re about to trigger MetaMask
+    logStatus("Sending transaction… check MetaMask");
+
+    try {
+      // Ask MetaMask to create & send a simple value transfer
+      // - from: the connected account
+      // - to:   the address in #contractAddress
+      // - value: amount in wei (hex)
+      // If you wanted to call a contract method, you'd also include a `data` field.
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: currentAccount,
+            to: to,
+            value: valueHex,
+          },
+        ],
+      });
+
+      // If MetaMask accepts and broadcasts, you get the transaction hash back
+      logStatus("Transaction sent! Hash: " + txHash);
+    } catch (err) {
+      // User rejected, or RPC error occurred
+      logStatus("Transaction failed: " + (err.message || err));
+    }
+  });
+</script>
 
 
 
@@ -547,6 +663,7 @@ Status: Not connected
 		</body>
 
 	</html>
+
 
 
 
