@@ -443,7 +443,9 @@ Status: Not connected
       a.addEventListener("click", (e) => {
         e.preventDefault();
         const choice = walletSelect?.value || "metamask";
-        const cleanUrl = location.href.replace(/^https?:\/\//, "");
+		const cleanUrl = "danieljahan.github.io/template01/"; // <- your exact GitHub Pages path
+
+        //const cleanUrl = location.href.replace(/^https?:\/\//, "");
 
         if (choice === "metamask") {
           window.location.href = `https://metamask.app.link/dapp/${cleanUrl}`;
@@ -711,6 +713,7 @@ Status: Not connected
 		</body>
 
 	</html>
+
 
 
 
