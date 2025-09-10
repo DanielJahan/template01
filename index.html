@@ -425,6 +425,54 @@ Status: Not connected
 
 
 
+<script>
+  /* === MOBILE HELPER (optional UX improvements) === */
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  (function setupMobileHelper() {
+    const actions = document.querySelector("#investForm .actions");
+    const walletSelect = document.getElementById("walletSelect");
+    if (!actions) return;
+
+    if (typeof window.ethereum === "undefined" && isMobile) {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.className = "button";
+      a.textContent = "Open in Wallet App";
+      a.href = "#";
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const choice = walletSelect?.value || "metamask";
+        const cleanUrl = location.href.replace(/^https?:\/\//, "");
+
+        if (choice === "metamask") {
+          window.location.href = `https://metamask.app.link/dapp/${cleanUrl}`;
+        } else if (choice === "trust") {
+          window.location.href = `trust://open_url?url=${encodeURIComponent(location.href)}`;
+        } else {
+          alert("Select a wallet first.");
+        }
+      });
+      li.appendChild(a);
+      actions.appendChild(li);
+
+      const statusEl = document.getElementById("investStatus");
+      if (statusEl) {
+        statusEl.textContent = "Status: Mobile browser detected without wallet provider. Use the 'Open in Wallet App' button.";
+      }
+    }
+  })();
+
+  // Make amount field robust to commas on mobile keyboards
+  (function patchAmountComma() {
+    const amt = document.getElementById("amountMatic");
+    if (!amt) return;
+    amt.addEventListener("input", () => {
+      if (amt.value.includes(",")) amt.value = amt.value.replace(",", ".");
+    });
+  })();
+</script>
+
 
 
 
@@ -663,6 +711,7 @@ Status: Not connected
 		</body>
 
 	</html>
+
 
 
 
