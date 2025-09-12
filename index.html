@@ -124,8 +124,7 @@
 
 		   <!-- Actions -->
 		  <ul class="actions" style="margin-top:1rem;">
-
-			 <a id="redirectToInvest" class="button" href="/template01/invest">Join Presale</a>
+			 <a id="investCta" class="button primary" href="/template01/invest">Join Presale</a>
 			  
 		  </ul>
 		  </ul>
@@ -225,6 +224,24 @@
 	  </div>
 	</section>
 
+							<script>
+  (function carryReferral() {
+    const qs = new URLSearchParams(location.search);
+    const refFromUrl = qs.get('ref');
+    const investBtn = document.getElementById('investCta');
+
+    // Basic ETH address check (you can swap for ethers.js isAddress)
+    const isAddress = v => /^0x[a-fA-F0-9]{40}$/.test(v || "");
+
+    let ref = refFromUrl || localStorage.getItem('mst_ref') || "";
+    if (ref && isAddress(ref)) {
+      // Persist for future pages
+      try { localStorage.setItem('mst_ref', ref); } catch {}
+      // Add to Invest link
+      if (investBtn) investBtn.href = `/invest?ref=${encodeURIComponent(ref)}`;
+    }
+  })();
+</script>
 
 <script>
   // Grab key DOM elements by their IDs so we can interact with the page
@@ -633,6 +650,7 @@
 		</body>
 
 	</html>
+
 
 
 
