@@ -337,6 +337,7 @@
           btnOpenWallet.hidden = false;
           btnOpenWallet.addEventListener("click", (e)=>{
             e.preventDefault();
+            try { localStorage.setItem('mst_pending_open_in_app','1'); } catch {}
             const cleanUrl = location.href.replace(/^https?:\/\//, "");
             location.href = `https://metamask.app.link/dapp/${cleanUrl}`;
           });
@@ -345,6 +346,39 @@
           btnInstall.addEventListener("click", ()=> window.open("https://metamask.io/download/","_blank","noopener"));
         }
       }
+    })();
+
+    // Auto-connect/advance when returning from wallet app or if already authorized
+    (function autoConnectOnLoad(){
+      if (!hasProvider()) return;
+      const ethereum = window.ethereum;
+      const pending = (()=>{ try { return localStorage.getItem('mst_pending_open_in_app') === '1'; } catch { return false; } })();
+      ethereum.request({ method: 'eth_accounts' }).then(async (accounts)=>{
+        if (accounts && accounts[0]){
+          currentAccount = accounts[0];
+          setStatus(`Connected: ${short(currentAccount)}`);
+          toStep2.disabled = false;
+          shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
+          setStep(2);
+          try { localStorage.removeItem('mst_pending_open_in_app'); } catch {}
+        } else if (pending){
+          try {
+            await ensurePolygon();
+            const accs = await ethereum.request({ method: 'eth_requestAccounts' });
+            currentAccount = accs && accs[0];
+            if (currentAccount){
+              setStatus(`Connected: ${short(currentAccount)}`);
+              toStep2.disabled = false;
+              shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
+              setStep(2);
+            }
+          } catch (e) {
+            // ignore; user may cancel
+          } finally {
+            try { localStorage.removeItem('mst_pending_open_in_app'); } catch {}
+          }
+        }
+      });
     })();
 
     // Amount -> USD hint
@@ -381,6 +415,16 @@
       try {
         await ensurePolygon();
         const accs = await ethereum.request({ method:"eth_requestAccounts" });
+        currentAccount = accs && accs[0];
+        if (currentAccount){
+          setStatus(`Connected: ${short(currentAccount)}`);
+          toStep2.disabled = false; // allow continue
+          shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
+          // Auto-advance to Step 2 on successful connect
+          setStep(2);
+        }
+      } catch(e){ setStatus(e.message || "Connect failed"); }
+    });
         currentAccount = accs && accs[0];
         if (currentAccount){
           setStatus(`Connected: ${short(currentAccount)}`);
@@ -443,6 +487,13 @@
       eth.on?.('accountsChanged', (accs)=>{
         currentAccount = (accs && accs[0]) || null;
         setStatus(currentAccount ? `Account: ${short(currentAccount)}` : 'No account');
+        toStep2.disabled = !currentAccount;
+        if (currentAccount) {
+          shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
+          // If user connects/switches to a valid account while on Step 1, auto-advance
+          if (!document.querySelector('#step1').hidden) setStep(2);
+        }
+      });
         toStep2.disabled = !currentAccount;
         if (currentAccount) shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
       });
