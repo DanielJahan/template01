@@ -224,24 +224,37 @@
 	  </div>
 	</section>
 
-							<script>
+<script>
   (function carryReferral() {
+    // Support either id="investCta" or id="joinPresale"
+    const investBtn = document.getElementById('investCta') || document.getElementById('joinPresale');
+    if (!investBtn) return;
+
     const qs = new URLSearchParams(location.search);
     const refFromUrl = qs.get('ref');
-    const investBtn = document.getElementById('investCta');
-
-    // Basic ETH address check (you can swap for ethers.js isAddress)
     const isAddress = v => /^0x[a-fA-F0-9]{40}$/.test(v || "");
 
     let ref = refFromUrl || localStorage.getItem('mst_ref') || "";
+
+    // Intended target from the button’s href
+    const DEFAULT_TARGET = 'invest/'; // change to 'invest.html' if that's your page
+    let rawHref = investBtn.getAttribute('href') || DEFAULT_TARGET;
+    if (rawHref.startsWith('/')) rawHref = DEFAULT_TARGET; // avoid domain root on project sites
+
+    // Build a proper URL relative to the page/base (respects <base href="/template01/">)
+    const url = new URL(rawHref, document.baseURI);
+
     if (ref && isAddress(ref)) {
-      // Persist for future pages
       try { localStorage.setItem('mst_ref', ref); } catch {}
-      // Add to Invest link
-      if (investBtn) investBtn.href = `/invest?ref=${encodeURIComponent(ref)}`;
+      url.searchParams.set('ref', ref);
+    } else {
+      url.searchParams.delete('ref');
     }
+
+    investBtn.setAttribute('href', url.href);
   })();
 </script>
+
 
 <script>
   // Grab key DOM elements by their IDs so we can interact with the page
@@ -650,6 +663,7 @@
 		</body>
 
 	</html>
+
 
 
 
