@@ -436,29 +436,6 @@
     });
     back2.addEventListener("click", ()=> setStep(2));
 
-    // Invest
-    btnInvest.addEventListener("click", async ()=>{
-      if (!hasProvider()){ setStatus("No wallet detected."); return; }
-      if (!currentAccount){ setStatus("Please connect wallet first."); return; }
-      const amtStr = (amountEl.value||"").trim();
-      if (!amtStr || isNaN(amtStr) || Number(amtStr)<=0){ setStatus("Enter a valid amount."); return; }
-      const to = CONTRACT_ADDRESS;
-      try{
-        await ensurePolygon();
-        setStatus("Sending transaction… check your wallet");
-        const valueHex = parseEtherToHexWei(amtStr);
-        const txHash = await window.ethereum.request({
-          method:"eth_sendTransaction",
-          params:[{ from: currentAccount, to, value: valueHex }]
-        });
-        txHashEl.textContent = short(txHash);
-        viewTx.href = `${POLYGON.explorer}/tx/${txHash}`;
-        setStatus("Transaction sent! View on explorer.");
-        setStep(4);
-      } catch(e){
-        setStatus(`Transaction failed: ${e.message || e}`);
-      }
-    });
 
     // Copy referral link on success
     copyRef.addEventListener("click", ()=> copy(shareRef.value));
@@ -475,5 +452,98 @@
       eth.on?.('chainChanged', ()=> location.reload());
     }
   </script>
+  <script type="module">
+  import {
+    BrowserProvider,
+    Contract,
+    parseEther
+  } from "https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.min.js";
+
+  // ---- Same config as your page ----
+  const CONTRACT_ADDRESS = "0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a";
+  const POLYGON = { chainId: "0x89", explorer: "https://polygonscan.com" };
+  const ABI = [
+    "function invest(address referralAddr) payable returns (uint256 tokenAmount)"
+  ];
+
+  // ---- Grab your existing DOM elements ----
+  const btnInvest  = document.getElementById("btnInvest");
+  const amountEl   = document.getElementById("amountMatic");
+  const refEl      = document.getElementById("referralAddr");
+  const statusBox  = document.getElementById("statusBox");
+  const txHashEl   = document.getElementById("txHash");
+  const viewTx     = document.getElementById("viewTx");
+
+  const setStatus = (m) => statusBox.textContent = "Status: " + m;
+  const isAddress = (v) => /^0x[a-fA-F0-9]{40}$/.test(v || "");
+
+  async function ensurePolygon() {
+    const ethereum = window.ethereum;
+    const cid = await ethereum.request({ method: "eth_chainId" });
+    if (cid.toLowerCase() === POLYGON.chainId.toLowerCase()) return true;
+    try {
+      await ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: POLYGON.chainId }]
+      });
+      return true;
+    } catch (e) {
+      if (e.code === 4902) {
+        await ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+            chainId: POLYGON.chainId,
+            chainName: "Polygon Mainnet",
+            nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
+            rpcUrls: ["https://polygon-rpc.com"],
+            blockExplorerUrls: [POLYGON.explorer]
+          }]
+        });
+        return true;
+      }
+      throw e;
+    }
+  }
+
+  btnInvest.addEventListener("click", async () => {
+    try {
+      if (!window.ethereum) return setStatus("No wallet detected.");
+      // Keep your 2-step: require an already-connected account
+      const accounts = await window.ethereum.request({ method: "eth_accounts" });
+      const currentAccount = accounts && accounts[0];
+      if (!currentAccount) return setStatus("Please connect wallet first.");
+
+      await ensurePolygon();
+
+      const amtStr = (amountEl.value || "").trim();
+      if (!amtStr || Number(amtStr) <= 0) return setStatus("Enter a valid amount.");
+
+      let referral = (refEl.value || "").trim();
+      if (!isAddress(referral)) {
+        referral = "0x0000000000000000000000000000000000000000";
+      }
+
+      // Call invest(referral) with value
+      const provider = new BrowserProvider(window.ethereum);
+      const signer   = await provider.getSigner();
+      const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+
+      setStatus("Preparing transaction…");
+      const overrides = { value: parseEther(amtStr) };
+      const gas = await contract.invest.estimateGas(referral, overrides);
+
+      setStatus("Sending transaction… check your wallet");
+      const tx = await contract.invest(referral, { ...overrides, gasLimit: gas });
+
+      txHashEl.textContent = tx.hash.slice(0,6) + "…" + tx.hash.slice(-4);
+      viewTx.href = `${POLYGON.explorer}/tx/${tx.hash}`;
+      setStatus("Transaction sent! View on explorer.");
+      if (typeof window.setStep === "function") window.setStep(4);
+    } catch (e) {
+      setStatus("Invest failed: " + (e.shortMessage || e.message || e));
+    }
+  });
+</script>
+
 </body>
 </html>
