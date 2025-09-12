@@ -226,6 +226,32 @@
     </section>
   </main>
 
+
+  <script>
+  (function initReferral() {
+    const isAddress = v => /^0x[a-fA-F0-9]{40}$/.test(v || "");
+    const refEl = document.getElementById("referralAddr");
+    const statusEl = document.getElementById("statusBox");
+
+    const qs = new URLSearchParams(location.search);
+    const ref = qs.get("ref") || localStorage.getItem("mst_ref") || "";
+
+    if (ref) {
+      if (isAddress(ref)) {
+        refEl.value = ref;
+        refEl.readOnly = true;                // lock if came from link/storage
+        refEl.setAttribute("aria-readonly","true");
+        try { localStorage.setItem("mst_ref", ref); } catch {}
+        statusEl.textContent = "Status: Referral locked: " + ref.slice(0,6) + "…" + ref.slice(-4);
+      } else {
+        statusEl.textContent = "Status: Referral parameter invalid. You can enter a different address.";
+      }
+    }
+  })();
+</script>
+
+
+  
   <script>
     // ===== Config =====
     const CONTRACT_ADDRESS = "0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a"; // replace if needed
