@@ -412,7 +412,8 @@
           setStatus(`Connected: ${short(currentAccount)}`);
           toStep2.disabled = false; // allow continue
           // Prebuild referral link for success step
-          shareRef.value = `${location.origin}/invest?ref=${currentAccount}`;
+          shareRef.value = buildInvestUrl(currentAccount);
+
         }
       } catch(e){ setStatus(e.message || "Connect failed"); }
     });
@@ -452,6 +453,27 @@
       eth.on?.('chainChanged', ()=> location.reload());
     }
   </script>
+
+  <script>
+  // Works on any page under /template01/ (GitHub Pages project)
+  function projectBase() {
+    const segs = location.pathname.split('/').filter(Boolean);
+    return segs.length ? `/${segs[0]}/` : '/';
+  }
+
+  // If your invest page is a FOLDER with index.html, keep 'invest/'
+  // If it's a single file, change to 'invest.html'
+  function buildInvestUrl(ref) {
+    const investPath = projectBase() + 'invest/';     // or 'invest.html'
+    const u = new URL(investPath, location.origin);
+    if (ref) u.searchParams.set('ref', ref);
+    return u.href;
+  }
+</script>
+
+
+
+  
   <script type="module">
   import {
     BrowserProvider,
