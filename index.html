@@ -210,6 +210,82 @@
 							<div>
 						</div>
 					</section>
+
+													<!-- FAQ Section -->
+<section id="faq" class="wrapper style1 special fade-up">
+  <div class="inner">
+    <h2>FAQ</h2>
+    <div class="faq-list">
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          What is MST Token? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>MST is an <strong>ERC20 token</strong> called <strong>Million Star Token</strong> with a maximum supply of <strong>500,000,000 MST</strong>.</p>
+        </div>
+      </div>
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          How do I invest? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Send <strong>POL (MATIC)</strong> to the contract.<br>
+          The contract automatically transfers MST tokens to your wallet.<br>
+          The current rate is <strong>2 MST per 1 POL (0.5 POL per MST)</strong>.</p>
+        </div>
+      </div>
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          What is the minimum and maximum investment? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <ul>
+            <li><strong>Minimum investment:</strong> 0.00001 POL (1e13 wei)</li>
+            <li><strong>Maximum investment per user:</strong> 1,000,000 POL worth of tokens</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          How does the referral system work? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <ul>
+            <li>If you invest using a <strong>referrer’s address</strong>, you get <strong>5% extra MST tokens</strong>.</li>
+            <li>The referrer also earns a <strong>5% commission in POL</strong>.</li>
+            <li>Referral commissions can be withdrawn once they reach at least <strong>0.005 POL</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          Can I get a refund on my investment? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes. You can return your MST tokens to the contract and receive <strong>80% of your original investment</strong> in POL back (refund rate = 80%).</p>
+        </div>
+      </div>
+
+      <div class="faq-item box">
+        <button class="faq-question">
+          Why can’t I see my MST tokens in my wallet? <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>You need to <strong>import the token by contract address</strong> into your wallet.<br>
+          The MST tokens are already in your wallet, but they won’t show up until you manually add the token using this contract address:</p>
+          <p><code>0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a</code></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>				
+			
 					
 					
 
@@ -248,6 +324,15 @@
 		</form>
 	  </div>
 	</section>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+      const faqItem = button.parentElement;
+      faqItem.classList.toggle('active');
+    });
+  });
+</script>
 
 <script>
   (function carryReferral() {
@@ -688,6 +773,7 @@
 		</body>
 
 	</html>
+
 
 
 
