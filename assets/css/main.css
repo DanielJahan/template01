@@ -4045,7 +4045,56 @@ input, select, textarea {
 			}
 
 	}
+	
+	<style>
+  /* FAQ styling consistent with section four */
+  .faq-item {
+    background: #2e3141 !important; /* same as section four */
+    border: solid 1px rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    margin-bottom: 1em;
+    padding: 1em 1.5em;
+  }
 
+  .faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-answer {
+    display: none;
+    margin-top: 1em;
+    font-size: 0.95em;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .faq-item.active .faq-answer {
+    display: block;
+  }
+
+  .faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+  }
+
+  .faq-toggle {
+    font-size: 1.5em;
+    transition: transform 0.3s ease;
+    color: #ffffff;
+  }
+  #faq .inner {
+  text-align: left;
+  max-width: 100%; /* so it stretches full width */
+}
+</style>
 /* XSmall */
 
 	@media screen and (max-width: 480px) {
