@@ -287,6 +287,34 @@
 		  <button id="copyMst" class="btn">Copy</button>
 		
 			</div>
+
+			<!-- FAQ: How can I get my referral link? -->
+<div class="faq-item box">
+  <button class="faq-question">
+    How can I get my referral link? <span class="faq-toggle">+</span>
+  </button>
+  <div class="faq-answer">
+    <p>Paste your Polygon wallet address (starts with <code>0x</code>) and generate your personal referral link:</p>
+
+    <div class="ref-maker">
+      <input id="refWallet" type="text" placeholder="0xYourPolygonAddress…" inputmode="text" autocomplete="off" />
+      <button id="btnMakeRef" class="btn">Generate</button>
+    </div>
+
+    <div id="refResult" class="ref-result" hidden>
+      <label for="refLink"><strong>Your referral link</strong></label>
+      <div class="copy-wrap">
+        <input id="refLink" type="text" readonly />
+        <button id="btnCopyRef" class="btn">Copy</button>
+      </div>
+      <div class="hint">Share this link—anyone who invests through it will include your address.</div>
+    </div>
+
+    <div id="refStatus" class="hint" aria-live="polite"></div>
+  </div>
+</div>
+
+			
         </div>
       </div>
 	</div>
@@ -332,6 +360,63 @@
 		</form>
 	  </div>
 	</section>
+
+							<script>
+  // Address check
+  const isAddress = v => /^0x[a-fA-F0-9]{40}$/.test((v||"").trim());
+
+  // Works on root or GitHub Pages project sites
+  function projectBase() {
+    const segs = location.pathname.split('/').filter(Boolean);
+    return segs.length ? `/${segs[0]}/` : '/';
+  }
+  // If your invest page is a folder with index.html keep 'invest/'
+  // If it's a single file, change to 'invest.html'
+  function buildInvestUrl(ref) {
+    const investPath = projectBase() + 'invest/'; // or 'invest.html'
+    const u = new URL(investPath, location.origin);
+    if (ref) u.searchParams.set('ref', ref);
+    return u.href;
+  }
+
+  (function wireReferralMaker(){
+    const walletEl = document.getElementById('refWallet');
+    const makeBtn  = document.getElementById('btnMakeRef');
+    const resultEl = document.getElementById('refResult');
+    const linkEl   = document.getElementById('refLink');
+    const copyBtn  = document.getElementById('btnCopyRef');
+    const statusEl = document.getElementById('refStatus');
+
+    function setStatus(msg){ statusEl.textContent = msg || ""; }
+    function showResult(url){ linkEl.value = url; resultEl.hidden = false; }
+
+    makeBtn.addEventListener('click', () => {
+      const addr = (walletEl.value || "").trim();
+      if (!isAddress(addr)) {
+        setStatus("Please enter a valid Polygon address (0x + 40 hex characters).");
+        walletEl.focus();
+        return;
+      }
+      const url = buildInvestUrl(addr);
+      showResult(url);
+      setStatus("Referral link generated.");
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(linkEl.value);
+        const old = copyBtn.textContent;
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => copyBtn.textContent = old, 1500);
+        setStatus("Copied to clipboard.");
+      } catch (e) {
+        setStatus("Copy failed. You can select and copy the link manually.");
+        linkEl.select();
+      }
+    });
+  })();
+</script>
+
 
 <script>
   document.querySelectorAll('.faq-question').forEach(button => {
@@ -789,6 +874,7 @@
 		</body>
 
 	</html>
+
 
 
 
