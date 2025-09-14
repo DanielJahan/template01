@@ -3743,6 +3743,22 @@ input, select, textarea {
 
 	}
 
+.copy-wrap {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.copy-wrap input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: #0e1a3d;
+  color: #f7f9fc;
+  font-family: monospace;
+}
+
 /* Small */
 
 	#navPanel, #titleBar {
