@@ -4161,6 +4161,10 @@ input, select, textarea {
 			#banner .content {
 				padding: 3em 1.5625em 5.25em 1.5625em;
 			}
+.x-icon svg{
+  display:inline-block;
+  vertical-align:-0.125em; /* align with FA baseline */
+}
 
 		/* Footer */
 
