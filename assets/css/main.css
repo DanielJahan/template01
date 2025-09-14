@@ -4117,6 +4117,21 @@ input, select, textarea {
   white-space: pre-wrap;
 }
 
+
+/* Make long codes/links wrap on small screens */
+.faq-answer code { word-break: break-all; white-space: pre-wrap; }
+
+/* Layout for generator */
+.ref-maker { display:flex; gap:8px; margin:8px 0 10px; }
+.ref-maker input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,.2); background:#0e1a3d; color:#f7f9fc; }
+.ref-result { margin-top:8px; }
+
+/* Reuse your existing .copy-wrap and .btn if present; otherwise fallback: */
+.copy-wrap { display:flex; gap:8px; margin-top:6px; }
+.copy-wrap input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,.2); background:#0e1a3d; color:#f7f9fc; }
+
+
+
 /* XSmall */
 
 	@media screen and (max-width: 480px) {
