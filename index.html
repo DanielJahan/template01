@@ -281,7 +281,13 @@
         <div class="faq-answer">
           <p>You need to <strong>import the token by contract address</strong> into your wallet.<br>
           The MST tokens are already in your wallet, but they won’t show up until you manually add the token using this contract address:</p>
-          <p><code>0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a</code></p>
+          
+			<div class="copy-wrap">
+		  <input id="mstAddress" type="text" value="0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a" readonly />
+		  <button id="copyMst" class="btn">Copy</button>
+		
+			</div>
+			<p><code>0x6715A25da511a4909dFBFbAD906Aa41F444CfD7a</code></p>
         </div>
       </div>
 	</div>
@@ -334,6 +340,20 @@
       const faqItem = button.parentElement;
       faqItem.classList.toggle('active');
     });
+  });
+</script>
+<script>
+  const copyBtn = document.getElementById("copyMst");
+  const addrInput = document.getElementById("mstAddress");
+
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(addrInput.value);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => (copyBtn.textContent = "Copy"), 2000);
+    } catch (err) {
+      alert("Failed to copy: " + err);
+    }
   });
 </script>
 
@@ -776,6 +796,7 @@
 		</body>
 
 	</html>
+
 
 
 
