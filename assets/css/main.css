@@ -4095,6 +4095,12 @@ input, select, textarea {
   max-width: 100%; /* so it stretches full width */
 }
 </style>
+
+.faq-answer code {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
 /* XSmall */
 
 	@media screen and (max-width: 480px) {
